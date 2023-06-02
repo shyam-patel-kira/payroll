@@ -32,13 +32,15 @@ contract Payroll {
 
     struct Employee {
         address employeeAddress;
+        string name;
+        uint256 age;
         uint256 salary;
         uint256 lastPaidAt;
     }
 
     mapping(address => Employee) public employees;
 
-    event EmployeeRegistered(address indexed employee, uint256 salary);
+    event EmployeeRegistered(address indexed employee, uint256 salary, uint256 age, string name);
     event EmployeeSalaryChanged(address indexed employee, uint256 newSalary);
     event EmployeePaid(address indexed employee, uint256 amount);
 
@@ -54,7 +56,7 @@ contract Payroll {
         );
     }
 
-    function registerEmployee(address employee, uint256 salary) external {
+    function registerEmployee(address employee, uint256 salary, uint256 age, string name) external {
         require(
             employees[employee].employeeAddress == address(0),
             "Employee already registered"
@@ -63,6 +65,8 @@ contract Payroll {
         employees[employee] = Employee({
             employeeAddress: employee,
             salary: salary,
+            name: name,
+            age: age,
             lastPaidAt: block.timestamp
         });
 
